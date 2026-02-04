@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.1deb3
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Tempo de geração: 18/11/2025 às 06:29
--- Versão do servidor: 9.1.0
--- Versão do PHP: 8.3.14
+-- Host: localhost:3306
+-- Tempo de geração: 29/01/2026 às 03:17
+-- Versão do servidor: 8.0.44-0ubuntu0.24.04.2
+-- Versão do PHP: 8.3.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,10 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `ibisa`
+-- Banco de dados: `agilizaecommerce`
 --
-CREATE DATABASE IF NOT EXISTS `ibisa` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-USE `ibisa`;
+CREATE DATABASE IF NOT EXISTS `agilizaecommerce` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `agilizaecommerce`;
 
 -- --------------------------------------------------------
 
@@ -29,12 +29,10 @@ USE `ibisa`;
 -- Estrutura para tabela `categoria`
 --
 
-DROP TABLE IF EXISTS `categoria`;
-CREATE TABLE IF NOT EXISTS `categoria` (
-  `id_categoria` int NOT NULL AUTO_INCREMENT,
-  `nome_categoria` varchar(100) NOT NULL,
-  PRIMARY KEY (`id_categoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `categoria` (
+  `id_categoria` int NOT NULL,
+  `nome_categoria` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Despejando dados para a tabela `categoria`
@@ -53,9 +51,8 @@ INSERT INTO `categoria` (`id_categoria`, `nome_categoria`) VALUES
 -- Estrutura para tabela `enderecos`
 --
 
-DROP TABLE IF EXISTS `enderecos`;
-CREATE TABLE IF NOT EXISTS `enderecos` (
-  `id_endereco` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `enderecos` (
+  `id_endereco` int NOT NULL,
   `id_usuario` int NOT NULL,
   `tipo_endereco` varchar(50) DEFAULT 'Casa',
   `cep` varchar(10) NOT NULL,
@@ -63,9 +60,7 @@ CREATE TABLE IF NOT EXISTS `enderecos` (
   `numerocasa` varchar(10) NOT NULL,
   `bairro` varchar(200) NOT NULL,
   `cidade` varchar(100) NOT NULL,
-  `uf` char(2) NOT NULL,
-  PRIMARY KEY (`id_endereco`),
-  KEY `fk_endereco_usuario` (`id_usuario`)
+  `uf` char(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -74,17 +69,14 @@ CREATE TABLE IF NOT EXISTS `enderecos` (
 -- Estrutura para tabela `estoque`
 --
 
-DROP TABLE IF EXISTS `estoque`;
-CREATE TABLE IF NOT EXISTS `estoque` (
-  `id_movimentacao` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `estoque` (
+  `id_movimentacao` int NOT NULL,
   `id_produto` int NOT NULL,
   `data` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `tipo_movimentacao` enum('Entrada','Saída') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `quantidade` int NOT NULL,
   `motivo` varchar(255) NOT NULL,
-  `valor_custo_unitario` decimal(10,2) DEFAULT NULL,
-  PRIMARY KEY (`id_movimentacao`),
-  KEY `fk_mov_produto` (`id_produto`)
+  `valor_custo_unitario` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -93,12 +85,10 @@ CREATE TABLE IF NOT EXISTS `estoque` (
 -- Estrutura para tabela `forma_pagamento`
 --
 
-DROP TABLE IF EXISTS `forma_pagamento`;
-CREATE TABLE IF NOT EXISTS `forma_pagamento` (
-  `id_forma_pagamento` int NOT NULL AUTO_INCREMENT,
-  `nome_forma_pagamento` varchar(100) NOT NULL,
-  PRIMARY KEY (`id_forma_pagamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `forma_pagamento` (
+  `id_forma_pagamento` int NOT NULL,
+  `nome_forma_pagamento` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Despejando dados para a tabela `forma_pagamento`
@@ -115,17 +105,13 @@ INSERT INTO `forma_pagamento` (`id_forma_pagamento`, `nome_forma_pagamento`) VAL
 -- Estrutura para tabela `itens_venda`
 --
 
-DROP TABLE IF EXISTS `itens_venda`;
-CREATE TABLE IF NOT EXISTS `itens_venda` (
-  `id_item_venda` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `itens_venda` (
+  `id_item_venda` int NOT NULL,
   `id_venda` int NOT NULL,
   `id_produto` int NOT NULL,
   `quantidade` int NOT NULL,
-  `preco_unitario` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`id_item_venda`),
-  KEY `fk_item_venda` (`id_venda`),
-  KEY `fk_item_produto` (`id_produto`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `preco_unitario` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Despejando dados para a tabela `itens_venda`
@@ -148,19 +134,16 @@ INSERT INTO `itens_venda` (`id_item_venda`, `id_venda`, `id_produto`, `quantidad
 -- Estrutura para tabela `mensagens_contato`
 --
 
-DROP TABLE IF EXISTS `mensagens_contato`;
-CREATE TABLE IF NOT EXISTS `mensagens_contato` (
-  `id_mensagem` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `mensagens_contato` (
+  `id_mensagem` int NOT NULL,
   `id_usuario` int DEFAULT NULL,
   `nome` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `email` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `assunto` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `mensagem` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `data_envio` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `status` enum('Pendente','Lida') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'Pendente',
-  PRIMARY KEY (`id_mensagem`),
-  KEY `fk_mensagem_usuario` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `status` enum('Pendente','Lida') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'Pendente'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Despejando dados para a tabela `mensagens_contato`
@@ -179,17 +162,14 @@ INSERT INTO `mensagens_contato` (`id_mensagem`, `id_usuario`, `nome`, `email`, `
 -- Estrutura para tabela `produto`
 --
 
-DROP TABLE IF EXISTS `produto`;
-CREATE TABLE IF NOT EXISTS `produto` (
-  `id_produto` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `produto` (
+  `id_produto` int NOT NULL,
   `nome_produto` varchar(200) NOT NULL,
   `id_categoria` int NOT NULL,
   `preco` decimal(10,2) NOT NULL,
   `estoque` int NOT NULL DEFAULT '0',
-  `imagem` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id_produto`),
-  KEY `fk_produto_categoria` (`id_categoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `imagem` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Despejando dados para a tabela `produto`
@@ -223,20 +203,16 @@ INSERT INTO `produto` (`id_produto`, `nome_produto`, `id_categoria`, `preco`, `e
 -- Estrutura para tabela `usuarios`
 --
 
-DROP TABLE IF EXISTS `usuarios`;
-CREATE TABLE IF NOT EXISTS `usuarios` (
-  `id_usuario` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `usuarios` (
+  `id_usuario` int NOT NULL,
   `tipo` int NOT NULL DEFAULT '1',
   `conta_status` enum('Ativa','Bloqueada') NOT NULL DEFAULT 'Ativa' COMMENT 'Controla se a conta do usuário está ativa ou bloqueada pelo admin',
   `nome_usuario` varchar(200) NOT NULL,
   `email` varchar(200) NOT NULL,
   `senha` varchar(255) NOT NULL,
   `telefone` varchar(50) NOT NULL,
-  `cpf` varchar(100) NOT NULL,
-  PRIMARY KEY (`id_usuario`),
-  UNIQUE KEY `email` (`email`),
-  UNIQUE KEY `cpf` (`cpf`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `cpf` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Despejando dados para a tabela `usuarios`
@@ -254,18 +230,14 @@ INSERT INTO `usuarios` (`id_usuario`, `tipo`, `conta_status`, `nome_usuario`, `e
 -- Estrutura para tabela `vendas`
 --
 
-DROP TABLE IF EXISTS `vendas`;
-CREATE TABLE IF NOT EXISTS `vendas` (
-  `id_venda` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `vendas` (
+  `id_venda` int NOT NULL,
   `data` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `valor_total` decimal(10,2) NOT NULL,
   `id_forma_pagamento` int NOT NULL,
   `id_usuario` int NOT NULL,
-  `status` enum('Aguardando Confirmação','Pagamento Aprovado','Em Preparação','Em Trânsito','Saiu para Entrega','Entregue','Cancelado') NOT NULL DEFAULT 'Aguardando Confirmação',
-  PRIMARY KEY (`id_venda`),
-  KEY `fk_venda_usuario` (`id_usuario`),
-  KEY `fk_venda_formapag` (`id_forma_pagamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `status` enum('Aguardando Confirmação','Pagamento Aprovado','Em Preparação','Em Trânsito','Saiu para Entrega','Entregue','Cancelado') NOT NULL DEFAULT 'Aguardando Confirmação'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Despejando dados para a tabela `vendas`
@@ -279,6 +251,132 @@ INSERT INTO `vendas` (`id_venda`, `data`, `valor_total`, `id_forma_pagamento`, `
 (7, '2025-11-14 13:00:14', 219.00, 3, 1, 'Entregue'),
 (8, '2025-11-15 21:57:01', 110.00, 3, 1, 'Pagamento Aprovado'),
 (9, '2025-11-17 05:19:42', 195.00, 3, 1, 'Saiu para Entrega');
+
+--
+-- Índices para tabelas despejadas
+--
+
+--
+-- Índices de tabela `categoria`
+--
+ALTER TABLE `categoria`
+  ADD PRIMARY KEY (`id_categoria`);
+
+--
+-- Índices de tabela `enderecos`
+--
+ALTER TABLE `enderecos`
+  ADD PRIMARY KEY (`id_endereco`),
+  ADD KEY `fk_endereco_usuario` (`id_usuario`);
+
+--
+-- Índices de tabela `estoque`
+--
+ALTER TABLE `estoque`
+  ADD PRIMARY KEY (`id_movimentacao`),
+  ADD KEY `fk_mov_produto` (`id_produto`);
+
+--
+-- Índices de tabela `forma_pagamento`
+--
+ALTER TABLE `forma_pagamento`
+  ADD PRIMARY KEY (`id_forma_pagamento`);
+
+--
+-- Índices de tabela `itens_venda`
+--
+ALTER TABLE `itens_venda`
+  ADD PRIMARY KEY (`id_item_venda`),
+  ADD KEY `fk_item_venda` (`id_venda`),
+  ADD KEY `fk_item_produto` (`id_produto`);
+
+--
+-- Índices de tabela `mensagens_contato`
+--
+ALTER TABLE `mensagens_contato`
+  ADD PRIMARY KEY (`id_mensagem`),
+  ADD KEY `fk_mensagem_usuario` (`id_usuario`);
+
+--
+-- Índices de tabela `produto`
+--
+ALTER TABLE `produto`
+  ADD PRIMARY KEY (`id_produto`),
+  ADD KEY `fk_produto_categoria` (`id_categoria`);
+
+--
+-- Índices de tabela `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id_usuario`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `cpf` (`cpf`);
+
+--
+-- Índices de tabela `vendas`
+--
+ALTER TABLE `vendas`
+  ADD PRIMARY KEY (`id_venda`),
+  ADD KEY `fk_venda_usuario` (`id_usuario`),
+  ADD KEY `fk_venda_formapag` (`id_forma_pagamento`);
+
+--
+-- AUTO_INCREMENT para tabelas despejadas
+--
+
+--
+-- AUTO_INCREMENT de tabela `categoria`
+--
+ALTER TABLE `categoria`
+  MODIFY `id_categoria` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de tabela `enderecos`
+--
+ALTER TABLE `enderecos`
+  MODIFY `id_endereco` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `estoque`
+--
+ALTER TABLE `estoque`
+  MODIFY `id_movimentacao` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `forma_pagamento`
+--
+ALTER TABLE `forma_pagamento`
+  MODIFY `id_forma_pagamento` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de tabela `itens_venda`
+--
+ALTER TABLE `itens_venda`
+  MODIFY `id_item_venda` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT de tabela `mensagens_contato`
+--
+ALTER TABLE `mensagens_contato`
+  MODIFY `id_mensagem` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de tabela `produto`
+--
+ALTER TABLE `produto`
+  MODIFY `id_produto` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+
+--
+-- AUTO_INCREMENT de tabela `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `id_usuario` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de tabela `vendas`
+--
+ALTER TABLE `vendas`
+  MODIFY `id_venda` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Restrições para tabelas despejadas

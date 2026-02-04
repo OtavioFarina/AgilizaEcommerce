@@ -1,8 +1,8 @@
 <?php
-$host = '127.0.0.1';
-$db_name = 'ibisa';
-$username = 'root';
-$password = '';
+$host = 'localhost';
+$db_name = 'agilizaecommerce';
+$username = 'admin';
+$password = 'admin';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db_name;charset=$charset";

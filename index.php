@@ -1,6 +1,6 @@
 <?php
-require_once 'session_config.php';
-require_once 'conexao.php';
+require_once 'config/session_config.php';
+require_once 'config/conexao.php';
 require_once 'functions.php';
 
 $produtos_destaque = [];
